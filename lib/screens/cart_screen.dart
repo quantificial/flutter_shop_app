@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/cart.dart';
+import '../providers/orders.dart';
 import '../widgets/cart_item.dart' as widget;
 
 class CartScreen extends StatelessWidget {
@@ -45,7 +46,15 @@ class CartScreen extends StatelessWidget {
                       ),
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
-                    OutlinedButton(onPressed: () {}, child: Text('Order Now.'))
+                    OutlinedButton(
+                        onPressed: () {
+                          Provider.of<Orders>(context, listen: false).addOrder(
+                              cart.items.values.toList(), cart.totalAmount);
+                          print('order!!');
+                          cart.clear();
+                          print('item: ' + cart.itemCount.toString());
+                        },
+                        child: Text('Order Now.'))
                   ]),
             )),
         SizedBox(
