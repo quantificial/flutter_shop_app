@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../providers/cart.dart';
 import '../providers/products.dart';
 import '../widgets/product_grid.dart';
+import '../widgets/badge.dart' as CustomBadge;
 
 enum FilterOptions { Favorites, All }
 
@@ -44,6 +46,17 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             ];
           },
         ),
+        Consumer<Cart>(
+          builder: (context, cart, child) {
+            return CustomBadge.Badge(
+                value: cart.itemCount.toString(),
+                child: IconButton(
+                  icon: Icon(Icons.shopping_cart),
+                  onPressed: () {},
+                ));
+          },
+        ),
+        Icon(Icons.access_alarm)
       ]),
       // grid view
       // the gird item ratio is for example
