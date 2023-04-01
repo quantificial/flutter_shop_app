@@ -22,13 +22,8 @@ class ProductItem extends StatelessWidget {
         // navigate to detail screen
         child: GestureDetector(
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) {
-                return ProductDetailScreen(
-                  title: title,
-                );
-              },
-            ));
+            Navigator.of(context)
+                .pushNamed(ProductDetailScreen.routeName, arguments: id);
           },
           child: Image.network(
             this.imageUrl,

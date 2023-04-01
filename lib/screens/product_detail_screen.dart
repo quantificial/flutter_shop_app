@@ -3,15 +3,19 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({super.key, required this.title});
+  const ProductDetailScreen({super.key});
 
-  final String title;
+  static const routeName = '/product-details';
+
+  //final String title;
 
   @override
   Widget build(BuildContext context) {
+    final productId = ModalRoute.of(context)?.settings.arguments as String;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(''),
       ),
     );
   }
