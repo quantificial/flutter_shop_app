@@ -5,8 +5,15 @@ import '../widgets/product_grid.dart';
 
 enum FilterOptions { Favorites, All }
 
-class ProductsOverviewScreen extends StatelessWidget {
+class ProductsOverviewScreen extends StatefulWidget {
   ProductsOverviewScreen({super.key});
+
+  @override
+  State<ProductsOverviewScreen> createState() => _ProductsOverviewScreenState();
+}
+
+class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
+  bool _isFavourite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +24,15 @@ class ProductsOverviewScreen extends StatelessWidget {
         const BottomSheetExample(),
         PopupMenuButton(
           onSelected: (value) {
-            if (value == FilterOptions.Favorites) {
-              productsContainer.showFavoritesOnly();
-            } else {
-              productsContainer.showAll();
-            }
+            setState(() {
+              if (value == FilterOptions.Favorites) {
+                //productsContainer.showFavoritesOnly();
+                _isFavourite = true;
+              } else {
+                _isFavourite = false;
+                //productsContainer.showAll();
+              }
+            });
           },
           icon: Icon(Icons.more_vert),
           itemBuilder: (context) {
@@ -37,7 +48,9 @@ class ProductsOverviewScreen extends StatelessWidget {
       // grid view
       // the gird item ratio is for example
       // 300px width vs 200px height => 3 / 2
-      body: ProductGrid(),
+      body: ProductGrid(
+        showFavorites: _isFavourite,
+      ),
     );
   }
 }
