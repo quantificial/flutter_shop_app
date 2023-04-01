@@ -2,13 +2,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 import 'package:flutter/material.dart';
-import 'package:shop_app/widgets/product.dart';
+import '../widgets/product_item.dart';
 
 import '../models/product.dart';
 
 class ProductsOverviewScreen extends StatelessWidget {
   ProductsOverviewScreen({super.key});
 
+  // dummy product list
   final List<Product> loadedProducts = [
     Product(
       id: 'p1',
@@ -48,6 +49,9 @@ class ProductsOverviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('MyShop')),
+      // grid view
+      // the gird item ratio is for example
+      // 300px width vs 200px height => 3 / 2
       body: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
