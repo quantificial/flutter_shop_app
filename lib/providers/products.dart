@@ -62,8 +62,24 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
-  void addProduct() {
+  void addProduct(Product product) {
     //_items.add(value)
+    final newProduct = Product(
+        title: product.title,
+        price: product.price,
+        description: product.description,
+        imageUrl: product.imageUrl,
+        id: DateTime.now().toString());
+    _items.insert(0, newProduct);
+
+    notifyListeners();
+  }
+
+  void updateProduct(Product product) {
+    final id = product.id;
+    final prodIndex = _items.indexWhere((element) => element.id == id);
+    _items[prodIndex] = product;
+
     notifyListeners();
   }
 
