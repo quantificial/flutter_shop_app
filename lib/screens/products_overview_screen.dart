@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/screens/cart_screen.dart';
+import 'package:shop_app/widgets/app_drawer.dart';
 import '../providers/cart.dart';
 import '../providers/products.dart';
 import '../widgets/product_grid.dart';
@@ -67,10 +68,12 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       body: ProductGrid(
         showFavorites: _isFavourite,
       ),
+      drawer: AppDrawer(),
     );
   }
 }
 
+// demo bottom sheet
 class BottomSheetExample extends StatelessWidget {
   const BottomSheetExample({super.key});
 
