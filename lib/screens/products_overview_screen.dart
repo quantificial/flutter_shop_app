@@ -17,14 +17,14 @@ class ProductsOverviewScreen extends StatefulWidget {
 }
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
-  bool _isFavourite = false;
+  bool _isFavourite = false; 
 
   @override
   Widget build(BuildContext context) {
     final productsContainer = Provider.of<Products>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(title: Text('MyShop'), actions: [
+      appBar: AppBar(title: const Text('MyShop'), actions: [
         const BottomSheetExample(),
         PopupMenuButton(
           onSelected: (value) {
@@ -38,13 +38,13 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               }
             });
           },
-          icon: Icon(Icons.more_vert),
+          icon: const Icon(Icons.more_vert),
           itemBuilder: (context) {
             return [
-              PopupMenuItem(
-                  child: Text('Only Favorites'),
-                  value: FilterOptions.Favorites),
-              PopupMenuItem(child: Text('Show All'), value: FilterOptions.All),
+              const PopupMenuItem(
+                  value: FilterOptions.Favorites,
+                  child: Text('Only Favorites')),
+              const PopupMenuItem(value: FilterOptions.All, child: Text('Show All')),
             ];
           },
         ),
@@ -53,14 +53,14 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             return CustomBadge.Badge(
                 value: cart.itemCount.toString(),
                 child: IconButton(
-                  icon: Icon(Icons.shopping_cart),
+                  icon: const Icon(Icons.shopping_cart),
                   onPressed: () {
                     Navigator.of(context).pushNamed(CartScreen.routeName);
                   },
                 ));
           },
         ),
-        Icon(Icons.access_alarm)
+        const Icon(Icons.access_alarm)
       ]),
       // grid view
       // the gird item ratio is for example
@@ -68,7 +68,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       body: ProductGrid(
         showFavorites: _isFavourite,
       ),
-      drawer: AppDrawer(),
+      drawer: const AppDrawer(),
     );
   }
 }
