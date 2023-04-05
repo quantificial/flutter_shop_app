@@ -92,6 +92,9 @@ class Products with ChangeNotifier {
           id: DateTime.now().toString());
       _items.insert(0, newProduct);
       notifyListeners();
+    }).catchError((error) {
+      print(error);
+      throw (error);
     });
 
     //return Future.value();

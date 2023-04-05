@@ -96,7 +96,25 @@ class _EditProductScreenState extends State<EditProductScreen> {
     });
 
     if (_editedProduct.id.isEmpty) {
-      products.addProduct(_editedProduct).then((_) {
+      products.addProduct(_editedProduct).catchError((error) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('error occured.'),
+              content: Text('something wrong'),
+              actions: [
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }).then((_) {
         setState(() {
           _isLoading = false;
         });
