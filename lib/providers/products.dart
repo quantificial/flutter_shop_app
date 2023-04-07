@@ -89,12 +89,13 @@ class Products with ChangeNotifier {
           price: product.price,
           description: product.description,
           imageUrl: product.imageUrl,
-          id: DateTime.now().toString());
+          //id: DateTime.now().toString()
+          id: jsonDecode(value.body)['name']);
       _items.insert(0, newProduct);
       notifyListeners();
     }).catchError((error) {
       print(error);
-      throw (error);
+      throw (error); // throw the error and handle in parent block
     });
 
     //return Future.value();

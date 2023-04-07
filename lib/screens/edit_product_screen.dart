@@ -96,6 +96,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     });
 
     if (_editedProduct.id.isEmpty) {
+      // if future catcherror is not used
+      // if async await is used, need to use try-catch block
+      // to handle the error
       products.addProduct(_editedProduct).catchError((error) {
         showDialog(
           context: context,
