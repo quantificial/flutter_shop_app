@@ -17,12 +17,26 @@ class ProductsOverviewScreen extends StatefulWidget {
 }
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
-  bool _isFavourite = false; 
+  bool _isFavourite = false;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // setState(() {
+    //   _isLoading = true;
+    // });
+
+    final productData = Provider.of<Products>(context, listen: false);
+    productData.fetchAndSetProducts();
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final productsContainer = Provider.of<Products>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(title: const Text('MyShop'), actions: [
         const BottomSheetExample(),
@@ -44,7 +58,8 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               const PopupMenuItem(
                   value: FilterOptions.Favorites,
                   child: Text('Only Favorites')),
-              const PopupMenuItem(value: FilterOptions.All, child: Text('Show All')),
+              const PopupMenuItem(
+                  value: FilterOptions.All, child: Text('Show All')),
             ];
           },
         ),
@@ -65,9 +80,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       // grid view
       // the gird item ratio is for example
       // 300px width vs 200px height => 3 / 2
-      body: ProductGrid(
-        showFavorites: _isFavourite,
-      ),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : ProductGrid(
+              showFavorites: _isFavourite,
+            ),
       drawer: const AppDrawer(),
     );
   }
