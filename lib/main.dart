@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
         // ChangeNotifierProvider(
         //   create: (context) => Products(),
         // ),
+        // products provider depends on auth provider to get the token
         ChangeNotifierProxyProvider<Auth, Products>(
           create: (context) => Products('', []),
           update: (context, value, previous) {
@@ -40,8 +41,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => Cart(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => Orders(),
+        // ChangeNotifierProvider(
+        //   create: (context) => Orders(),
+        // ),
+        ChangeNotifierProxyProvider<Auth, Orders>(
+          create: (context) => Orders('', []),
+          update: (context, value, previous) {
+            return Orders(value.token, previous == null ? [] : previous.orders);
+          },
         ),
       ],
       child: Consumer<Auth>(builder: (ctx, v, child) {
