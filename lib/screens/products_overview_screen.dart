@@ -80,11 +80,28 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       // grid view
       // the gird item ratio is for example
       // 300px width vs 200px height => 3 / 2
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : ProductGrid(
+      // body: _isLoading
+      //     ? Center(child: CircularProgressIndicator())
+      //     : ProductGrid(
+      //         showFavorites: _isFavourite,
+      //       ),
+      body: FutureBuilder(
+        // FutureBuilder<Image> etc...
+        future:
+            Provider.of<Products>(context, listen: false).fetchAndSetProducts(),
+        builder: (context, snapshot) {
+          print(snapshot.connectionState);
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            //print(snapshot.data);
+            return ProductGrid(
               showFavorites: _isFavourite,
-            ),
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
       drawer: const AppDrawer(),
     );
   }
