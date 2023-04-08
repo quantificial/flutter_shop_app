@@ -80,7 +80,7 @@ class Products with ChangeNotifier {
             id: prodId,
             title: prodData['title'],
             description: prodData['description'],
-            price: prodData['price'],
+            price: (prodData['price'] as double),
             imageUrl: prodData['imageUrl'],
             isFavorite: prodData['isFavorite']));
       });
@@ -88,7 +88,7 @@ class Products with ChangeNotifier {
       _items = loadedProducts;
       notifyListeners();
     } catch (error) {
-      throw (error);
+      rethrow;
     }
   }
 
