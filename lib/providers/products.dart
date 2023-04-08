@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:shop_app/models/http_execption.dart';
+import 'package:shop_app/providers/auth.dart';
 import 'product.dart';
 
 class Products with ChangeNotifier {
@@ -42,7 +43,11 @@ class Products with ChangeNotifier {
     ),
   ];
 
+  String? _authToken;
+
   var _showFavoritesOnly = false;
+
+  Products(this._authToken, this._items);
 
   void showFavoritesOnly() {
     _showFavoritesOnly = true;
@@ -68,7 +73,7 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     var url = Uri.parse(
-        'https://flutter-update-88cf0-default-rtdb.firebaseio.com/products.json');
+        'https://flutter-update-88cf0-default-rtdb.firebaseio.com/products.json?auth=${_authToken}');
     try {
       final response = await http.get(url);
       print(response.body);
@@ -96,7 +101,7 @@ class Products with ChangeNotifier {
   Future<void> addProduct(Product product) {
     // http call to firebase
     final url = Uri.parse(
-        'https://flutter-update-88cf0-default-rtdb.firebaseio.com/products.json');
+        'https://flutter-update-88cf0-default-rtdb.firebaseio.com/products.json?auth=${_authToken}');
 
     return http
         .post(url,
@@ -134,7 +139,7 @@ class Products with ChangeNotifier {
 
     if (prodIndex >= 0) {
       final url = Uri.parse(
-          'https://flutter-update-88cf0-default-rtdb.firebaseio.com/products/${newProductData.id}.json');
+          'https://flutter-update-88cf0-default-rtdb.firebaseio.com/products/${newProductData.id}.json?auth=${_authToken}');
 
       await http.patch(url,
           body: jsonEncode({
@@ -153,7 +158,7 @@ class Products with ChangeNotifier {
 
   void deleteProduct(String id) {
     final url = Uri.parse(
-        'https://flutter-update-88cf0-default-rtdb.firebaseio.com/products/${id}.json');
+        'https://flutter-update-88cf0-default-rtdb.firebaseio.com/products/${id}.json?auth=${_authToken}');
 
     // add some logic for erro handling
     final existingProductIndex =
