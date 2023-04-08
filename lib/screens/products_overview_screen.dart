@@ -28,11 +28,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     // });
 
     final productData = Provider.of<Products>(context, listen: false);
-    productData.fetchAndSetProducts();
-
-    setState(() {
-      _isLoading = false;
-    });
+    productData.fetchAndSetProducts().then((value) => {
+          setState(() {
+            _isLoading = false;
+          })
+        });
   }
 
   @override
