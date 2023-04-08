@@ -27,12 +27,12 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     //   _isLoading = true;
     // });
 
-    final productData = Provider.of<Products>(context, listen: false);
-    productData.fetchAndSetProducts().then((value) => {
-          setState(() {
-            _isLoading = false;
-          })
-        });
+    // final productData = Provider.of<Products>(context, listen: false);
+    // productData.fetchAndSetProducts().then((value) => {
+    //       setState(() {
+    //         _isLoading = false;
+    //       })
+    //     });
   }
 
   @override
@@ -91,14 +91,13 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             Provider.of<Products>(context, listen: false).fetchAndSetProducts(),
         builder: (context, snapshot) {
           print(snapshot.connectionState);
-
-          if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else {
             //print(snapshot.data);
             return ProductGrid(
               showFavorites: _isFavourite,
             );
-          } else {
-            return Center(child: CircularProgressIndicator());
           }
         },
       ),
