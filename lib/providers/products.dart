@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:shop_app/models/http_execption.dart';
 import 'product.dart';
 
 class Products with ChangeNotifier {
@@ -151,8 +152,32 @@ class Products with ChangeNotifier {
   }
 
   void deleteProduct(String id) {
-    _items.removeWhere((element) => element.id == id);
+    final url = Uri.parse(
+        'https://flutter-update-88cf0-default-rtdb.firebaseio.com/products/${id}.json');
+
+    // add some logic for erro handling
+    final existingProductIndex =
+        _items.indexWhere((element) => element.id == id);
+    var existingProduct = _items[existingProductIndex];
+
+    //_items.removeWhere((element) => element.id == id);
+    _items.removeAt(existingProductIndex);
     notifyListeners();
+
+    http
+        .delete(url)
+        .then((value) => {
+              //existingProduct = null;
+
+// delete not successful, the return status is over 400
+              if (value.statusCode >= 400)
+                {throw HttpExeception('Could not delete product.')}
+            })
+        .catchError((error) {
+      _items.insert(existingProductIndex, existingProduct);
+      print('cannot delete product');
+      notifyListeners();
+    });
   }
 
   Product findById(String id) {
