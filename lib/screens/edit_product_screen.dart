@@ -80,7 +80,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  void _saveForm() {
+  void _saveForm() async {
     var isValid = _form.currentState!.validate();
 
     if (!isValid) return;
@@ -124,7 +124,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         Navigator.of(context).pop();
       });
     } else {
-      products.updateProduct(_editedProduct);
+      await products.updateProduct(_editedProduct.id, _editedProduct);
       setState(() {
         _isLoading = false;
       });
