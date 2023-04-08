@@ -5,11 +5,29 @@ import 'package:http/http.dart' as http;
 import 'package:shop_app/models/http_execption.dart';
 
 class Auth with ChangeNotifier {
-  late String _token;
-  late DateTime _expiryDate;
-  late String _userId;
+  String? _token;
+  DateTime? _expiryDate;
+  String? _userId;
 
   final String webkey = 'AIzaSyDOWMeAeCvsMv51GU-N3iMLcZv3ilIqZkQ';
+
+  bool get isAuth {
+    if (_expiryDate != null && _token != null) {
+      if (_expiryDate!.isAfter(DateTime.now())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  String get token {
+    if (_expiryDate != null && _token != null) {
+      if (_expiryDate!.isAfter(DateTime.now())) {
+        return token;
+      }
+    }
+    return '';
+  }
 
   Future<void> signup(String email, String password) async {
     // https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=[API_KEY]
@@ -33,6 +51,13 @@ class Auth with ChangeNotifier {
       if (responseData['error'] != null) {
         throw HttpExeception(responseData['error']['message']);
       }
+
+      _token = responseData['idToken'];
+      _userId = responseData['localId'];
+      _expiryDate = DateTime.now()
+          .add(Duration(seconds: int.parse(responseData['expiresIn'])));
+
+      notifyListeners();
     } catch (error) {
       rethrow;
     }
@@ -56,6 +81,13 @@ class Auth with ChangeNotifier {
       if (responseData['error'] != null) {
         throw HttpExeception(responseData['error']['message']);
       }
+
+      _token = responseData['idToken'];
+      _userId = responseData['localId'];
+      _expiryDate = DateTime.now()
+          .add(Duration(seconds: int.parse(responseData['expiresIn'])));
+
+      notifyListeners();
     } catch (error) {
       rethrow;
     }

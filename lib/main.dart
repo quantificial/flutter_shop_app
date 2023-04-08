@@ -37,24 +37,28 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(create: (context) => Auth()),
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-            // color theme
-            // primarySwatch: Colors.purple,
-            // accentColor: Colors.deepOrange,
-            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
-                .copyWith(secondary: Colors.deepOrange),
-            fontFamily: 'Lato'),
-        home: AuthScreen(),
-        routes: {
-          ProductDetailScreen.routeName: (context) => ProductDetailScreen(),
-          CartScreen.routeName: (context) => CartScreen(),
-          OrderScreen.routeName: (context) => OrderScreen(),
-          UserProductsScreen.routeName: (context) => UserProductsScreen(),
-          EditProductScreen.routeName: (context) => EditProductScreen(),
-        },
-      ),
+      child: Consumer<Auth>(builder: (ctx, v, child) {
+        return MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+              // color theme
+              // primarySwatch: Colors.purple,
+              // accentColor: Colors.deepOrange,
+              colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
+                  .copyWith(secondary: Colors.deepOrange),
+              fontFamily: 'Lato'),
+          home: v.isAuth ? ProductsOverviewScreen() : AuthScreen(),
+          routes: {
+            ProductDetailScreen.routeName: (context) => ProductDetailScreen(),
+            CartScreen.routeName: (context) => CartScreen(),
+            OrderScreen.routeName: (context) => OrderScreen(),
+            UserProductsScreen.routeName: (context) => UserProductsScreen(),
+            EditProductScreen.routeName: (context) => EditProductScreen(),
+            ProductsOverviewScreen.routeName: (context) =>
+                ProductsOverviewScreen()
+          },
+        );
+      }),
     );
   }
 }

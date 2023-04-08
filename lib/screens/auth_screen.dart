@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/models/http_execption.dart';
+import 'package:shop_app/screens/products_overview_screen.dart';
 
 import '../providers/auth.dart';
 
@@ -141,6 +142,9 @@ class _AuthCardState extends State<AuthCard> {
         await Provider.of<Auth>(context, listen: false)
             .signup(_authData['email']!, _authData['password']!);
       }
+
+      // Navigator.of(context)
+      //     .pushReplacementNamed(ProductsOverviewScreen.routeName);
     } on HttpExeception catch (error) {
       var errorMessage = 'Authentication Failed';
 
