@@ -79,6 +79,10 @@ class Products with ChangeNotifier {
   Future<void> fetchAndSetProducts() async {
     var url = Uri.parse(
         'https://flutter-update-88cf0-default-rtdb.firebaseio.com/products.json?auth=$_authToken');
+
+    var url2 = Uri.parse(
+        'https://flutter-update-88cf0-default-rtdb.firebaseio.com/products.json?auth=$_authToken&orderBy="creatorId"&equalTo="$_userId"');
+
     try {
       final response = await http.get(url);
       print(response.body);
@@ -129,6 +133,7 @@ class Products with ChangeNotifier {
               'imageUrl': product.imageUrl,
               'price': product.price,
               //'isFavorite': product.isFavorite
+              'creatorId': _userId
             }))
         .then((value) {
       // logic here.
