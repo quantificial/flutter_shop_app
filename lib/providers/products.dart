@@ -43,11 +43,16 @@ class Products with ChangeNotifier {
     ),
   ];
 
-  String? _authToken;
+  final String? _authToken;
+  final String? _userId;
 
   var _showFavoritesOnly = false;
 
-  Products(this._authToken, this._items);
+  Products(
+    this._authToken,
+    this._userId,
+    this._items,
+  );
 
   void showFavoritesOnly() {
     _showFavoritesOnly = true;
@@ -73,27 +78,40 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     var url = Uri.parse(
-        'https://flutter-update-88cf0-default-rtdb.firebaseio.com/products.json?auth=${_authToken}');
+        'https://flutter-update-88cf0-default-rtdb.firebaseio.com/products.json?auth=$_authToken');
     try {
       final response = await http.get(url);
       print(response.body);
 
       final extractedData = jsonDecode(response.body) as Map<String, dynamic>;
+      //if(extractedData==null)
+      var furl = Uri.parse(
+          'https://flutter-update-88cf0-default-rtdb.firebaseio.com/userFavorites/$_userId.json?auth=${_authToken}');
+
+      final favoriteResponse = await http.get(furl);
+      final favoriteData = jsonDecode(favoriteResponse.body);
 
       final List<Product> loadedProducts = [];
       extractedData.forEach((prodId, prodData) {
+        var fav = false;
+        if (favoriteData != null && favoriteData[prodId] != null) {
+          fav = favoriteData[prodId];
+        }
         loadedProducts.add(Product(
-            id: prodId,
-            title: prodData['title'],
-            description: prodData['description'],
-            price: (prodData['price'] as double),
-            imageUrl: prodData['imageUrl'],
-            isFavorite: prodData['isFavorite']));
+          id: prodId,
+          title: prodData['title'],
+          description: prodData['description'],
+          price: (prodData['price'] as double),
+          imageUrl: prodData['imageUrl'],
+          //isFavorite: prodData['isFavorite'])
+          isFavorite: fav,
+        ));
       });
 
       _items = loadedProducts;
       notifyListeners();
     } catch (error) {
+      print(error);
       rethrow;
     }
   }
@@ -110,7 +128,7 @@ class Products with ChangeNotifier {
               'description': product.description,
               'imageUrl': product.imageUrl,
               'price': product.price,
-              'isFavorite': product.isFavorite
+              //'isFavorite': product.isFavorite
             }))
         .then((value) {
       // logic here.

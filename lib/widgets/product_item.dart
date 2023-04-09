@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/screens/product_detail_screen.dart';
 
+import '../providers/auth.dart';
 import '../providers/cart.dart';
 import '../providers/product.dart';
 
@@ -17,6 +18,7 @@ class ProductItem extends StatelessWidget {
     //final product = Provider.of<Product>(context);
 
     final cart = Provider.of<Cart>(context, listen: false);
+    final auth = Provider.of<Auth>(context, listen: false);
 
     // if using consumer, you can only wrap the sub-part of the
     // widget so that not everything are rebuilt in this screen
@@ -35,7 +37,7 @@ class ProductItem extends StatelessWidget {
                     ? Icons.favorite
                     : Icons.favorite_border),
                 onPressed: () {
-                  product.toggleFavoriteStatus();
+                  product.toggleFavoriteStatus(auth.token, auth.userId);
                 },
                 color: Theme.of(context).colorScheme.secondary,
               ),

@@ -29,6 +29,14 @@ class Auth with ChangeNotifier {
     return '';
   }
 
+  String get userId {
+    if (_userId != null) {
+      return _userId!;
+    } else {
+      return '';
+    }
+  }
+
   Future<void> signup(String email, String password) async {
     // https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=[API_KEY]
     // https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]
